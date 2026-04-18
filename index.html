@@ -28,7 +28,7 @@
         <div class="hero-left">
             <div class="hero-logo-bg" aria-hidden="true"><img id="heroLogoBg" alt=""></div>
             <canvas id="particleCanvas"></canvas>
-            <div class="particle-label" aria-hidden="true"><span class="pl-sky">SKY</span><span class="pl-realty-group">REALTY GROUP</span></div>
+            <div class="particle-label" aria-hidden="true"><span class="pl-sky">SKY</span><span class="pl-property-group">PROPERTY GROUP</span></div>
             <div class="hero-text">
                 <span class="hero-eyebrow">Michigan Commercial Real Estate</span>
                 <h1>Michigan&rsquo;s<br><em>Premier</em><br>CRE Firm</h1>
@@ -200,9 +200,9 @@
             offscreen.width = W;
             offscreen.height = H;
             const oc = offscreen.getContext('2d');
-            // Scale REALTY GROUP to fit 78% of canvas width
+            // Scale PROPERTY GROUP to fit 78% of canvas width
             oc.font = '300 100px "Cormorant Garant", serif';
-            const refW = oc.measureText('REALTY GROUP').width;
+            const refW = oc.measureText('PROPERTY GROUP').width;
             const isMobile = W < 600;
             const smallFS = Math.floor(100 * (W * (isMobile ? 0.88 : 0.70)) / refW);
             const bigFS = Math.floor(smallFS * (isMobile ? 1.6 : 1.2));
@@ -215,7 +215,7 @@
             oc.font = `300 ${bigFS}px "Cormorant Garant", serif`;
             oc.fillText('SKY', W / 2, topY);
             oc.font = `300 ${smallFS}px "Cormorant Garant", serif`;
-            oc.fillText('REALTY GROUP', W / 2, botY);
+            oc.fillText('PROPERTY GROUP', W / 2, botY);
             const d = oc.getImageData(0, 0, W, H).data;
             const pts = [];
             for (let y = 0; y < H; y += 2) {
@@ -230,8 +230,8 @@
             }
             for (let i = 0; i < N; i++) {
                 const p = pts[i % pts.length];
-                tx[i] = p[0] + (Math.random() - 0.5) * 0.4;
-                ty[i] = p[1] + (Math.random() - 0.5) * 0.4;
+                tx[i] = p[0] + (Math.random() - 0.5) * 0.2;
+                ty[i] = p[1] + (Math.random() - 0.5) * 0.2;
                 if (!initialized) {
                     px[i] = Math.random() * W;
                     py[i] = Math.random() * H;
@@ -247,8 +247,8 @@
             for (let i = 0; i < N; i++) {
                 const dx = tx[i] - px[i];
                 const dy = ty[i] - py[i];
-                vx[i] += dx * 0.20;
-                vy[i] += dy * 0.20;
+                vx[i] += dx * 0.28;
+                vy[i] += dy * 0.28;
                 // Mouse/touch repulsion
                 const mx = px[i] - mouse.x;
                 const my = py[i] - mouse.y;
@@ -258,8 +258,8 @@
                     vx[i] += (mx / md) * f;
                     vy[i] += (my / md) * f;
                 }
-                vx[i] *= 0.88;
-                vy[i] *= 0.88;
+                vx[i] *= 0.92;
+                vy[i] *= 0.92;
                 px[i] += vx[i];
                 py[i] += vy[i];
                 const speed = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
