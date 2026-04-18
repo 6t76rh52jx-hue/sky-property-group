@@ -124,26 +124,6 @@ body {
     overflow: hidden;
 }
 
-.hero-logo-bg {
-    position: absolute;
-    top: 4%;
-    left: 0;
-    right: 0;
-    height: 46%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0.85;
-}
-.hero-logo-bg img {
-    max-height: 100%;
-    max-width: 70%;
-    width: auto;
-    object-fit: contain;
-}
-
 #particleCanvas {
     position: absolute;
     inset: 0;
@@ -161,7 +141,7 @@ body {
 .particle-label {
     position: absolute;
     left: 50%;
-    top: 58%;
+    top: 38%;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
@@ -181,15 +161,15 @@ body {
     opacity: 0;
 }
 .pl-sky {
-    font-size: clamp(3rem, 6.5vw, 6rem);
+    font-size: clamp(4rem, 8vw, 7.5rem);
     color: rgba(255,255,255,0.95);
     letter-spacing: 0.14em;
     font-weight: 200;
 }
 .pl-property-group {
-    font-size: clamp(0.75rem, 1.6vw, 1.5rem);
-    color: rgba(255,255,255,0.78);
-    letter-spacing: 0.30em;
+    font-size: clamp(0.85rem, 1.8vw, 1.7rem);
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.32em;
     text-transform: uppercase;
     font-weight: 300;
 }

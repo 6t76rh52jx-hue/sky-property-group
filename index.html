@@ -26,7 +26,6 @@
     <!-- HERO: SPLIT SCREEN -->
     <section class="hero" style="padding:0;overflow:hidden;">
         <div class="hero-left">
-            <div class="hero-logo-bg" aria-hidden="true"><img id="heroLogoBg" alt=""></div>
             <canvas id="particleCanvas"></canvas>
             <div class="particle-label" aria-hidden="true"><span class="pl-sky">SKY</span><span class="pl-property-group">PROPERTY GROUP</span></div>
             <div class="hero-text">
@@ -207,7 +206,7 @@
             const smallFS = Math.floor(100 * (W * (isMobile ? 0.78 : 0.55)) / refW);
             const bigFS = Math.floor(smallFS * (isMobile ? 1.4 : 1.1));
             const totalH = bigFS * 1.1 + smallFS * 1.1;
-            const topY = H * 0.60 - totalH * 0.5 + bigFS * 0.5;
+            const topY = H * 0.38 - totalH * 0.5 + bigFS * 0.5;
             const botY = topY + bigFS * 1.1 + smallFS * 0.5;
             oc.fillStyle = '#fff';
             oc.textAlign = 'center';
@@ -294,12 +293,6 @@
         });
 
         window.addEventListener('resize', resize);
-        // Copy navbar logo into hero background watermark
-        (function() {
-            const logoEl = document.querySelector('.navbar .logo img');
-            const logoBgImg = document.getElementById('heroLogoBg');
-            if (logoEl && logoBgImg) logoBgImg.src = logoEl.src;
-        })();
 
         resize();
         document.fonts.ready.then(() => {
