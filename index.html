@@ -200,7 +200,7 @@
             offscreen.height = H * SCALE;
             const oc = offscreen.getContext('2d');
             oc.scale(SCALE, SCALE);
-            oc.font = '300 100px "Cormorant Garant", serif';
+            oc.font = '400 100px "Inter", sans-serif';
             const refW = oc.measureText('PROPERTY GROUP').width;
             const isMobile = W < 600;
             const smallFS = Math.floor(100 * (W * (isMobile ? 0.78 : 0.55)) / refW);
@@ -211,9 +211,9 @@
             oc.fillStyle = '#000';
             oc.textAlign = 'center';
             oc.textBaseline = 'middle';
-            oc.font = `300 ${bigFS}px "Cormorant Garant", serif`;
+            oc.font = `300 ${bigFS}px "Inter", sans-serif`;
             oc.fillText('SKY', W / 2, topY);
-            oc.font = `300 ${smallFS}px "Cormorant Garant", serif`;
+            oc.font = `300 ${smallFS}px "Inter", sans-serif`;
             oc.fillText('PROPERTY GROUP', W / 2, botY);
             const d = oc.getImageData(0, 0, W * SCALE, H * SCALE).data;
             const pts = [];

@@ -118,24 +118,13 @@ body {
 .hero-left {
     background-color: #ffffff;
     background-repeat: no-repeat;
-    background-size: 190% auto;
-    background-position: center top;
+    background-size: 42% auto;
+    background-position: center 2%;
     position: relative;
     display: flex;
     align-items: flex-end;
     padding: 0 7vw 9vh;
     overflow: hidden;
-}
-.hero-left::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 35%;
-    background: linear-gradient(to bottom, transparent, #ffffff);
-    z-index: 1;
-    pointer-events: none;
 }
 
 #particleCanvas {
