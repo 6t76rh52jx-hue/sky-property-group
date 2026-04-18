@@ -204,10 +204,10 @@
             oc.font = '300 100px "Cormorant Garant", serif';
             const refW = oc.measureText('PROPERTY GROUP').width;
             const isMobile = W < 600;
-            const smallFS = Math.floor(100 * (W * (isMobile ? 0.88 : 0.70)) / refW);
-            const bigFS = Math.floor(smallFS * (isMobile ? 1.6 : 1.2));
+            const smallFS = Math.floor(100 * (W * (isMobile ? 0.78 : 0.55)) / refW);
+            const bigFS = Math.floor(smallFS * (isMobile ? 1.4 : 1.1));
             const totalH = bigFS * 1.1 + smallFS * 1.1;
-            const topY = H * 0.10 + bigFS * 0.5;
+            const topY = H * 0.60 - totalH * 0.5 + bigFS * 0.5;
             const botY = topY + bigFS * 1.1 + smallFS * 0.5;
             oc.fillStyle = '#fff';
             oc.textAlign = 'center';
