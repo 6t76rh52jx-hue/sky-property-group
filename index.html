@@ -27,7 +27,6 @@
     <section class="hero" style="padding:0;overflow:hidden;">
         <div class="hero-left">
             <canvas id="particleCanvas"></canvas>
-            <div class="particle-label" aria-hidden="true"><span class="pl-sky">SKY</span><span class="pl-property-group">PROPERTY GROUP</span></div>
             <div class="hero-text">
                 <span class="hero-eyebrow">Michigan Commercial Real Estate</span>
                 <h1>Michigan&rsquo;s<br><em>Premier</em><br>CRE Firm</h1>
@@ -195,11 +194,12 @@
         }
 
         function sampleText() {
+            const SCALE = 3;
             const offscreen = document.createElement('canvas');
-            offscreen.width = W;
-            offscreen.height = H;
+            offscreen.width = W * SCALE;
+            offscreen.height = H * SCALE;
             const oc = offscreen.getContext('2d');
-            // Scale PROPERTY GROUP to fit 78% of canvas width
+            oc.scale(SCALE, SCALE);
             oc.font = '300 100px "Cormorant Garant", serif';
             const refW = oc.measureText('PROPERTY GROUP').width;
             const isMobile = W < 600;
@@ -208,18 +208,18 @@
             const totalH = bigFS * 1.1 + smallFS * 1.1;
             const topY = H * 0.38 - totalH * 0.5 + bigFS * 0.5;
             const botY = topY + bigFS * 1.1 + smallFS * 0.5;
-            oc.fillStyle = '#fff';
+            oc.fillStyle = '#000';
             oc.textAlign = 'center';
             oc.textBaseline = 'middle';
             oc.font = `300 ${bigFS}px "Cormorant Garant", serif`;
             oc.fillText('SKY', W / 2, topY);
             oc.font = `300 ${smallFS}px "Cormorant Garant", serif`;
             oc.fillText('PROPERTY GROUP', W / 2, botY);
-            const d = oc.getImageData(0, 0, W, H).data;
+            const d = oc.getImageData(0, 0, W * SCALE, H * SCALE).data;
             const pts = [];
-            for (let y = 0; y < H; y += 2) {
-                for (let x = 0; x < W; x += 2) {
-                    if (d[(y * W + x) * 4 + 3] > 100) pts.push([x, y]);
+            for (let y = 0; y < H * SCALE; y += 2) {
+                for (let x = 0; x < W * SCALE; x += 2) {
+                    if (d[(y * W * SCALE + x) * 4 + 3] > 128) pts.push([x / SCALE, y / SCALE]);
                 }
             }
             // Fisher-Yates shuffle
@@ -229,8 +229,8 @@
             }
             for (let i = 0; i < N; i++) {
                 const p = pts[i % pts.length];
-                tx[i] = p[0] + (Math.random() - 0.5) * 0.2;
-                ty[i] = p[1] + (Math.random() - 0.5) * 0.2;
+                tx[i] = p[0] + (Math.random() - 0.5) * 0.1;
+                ty[i] = p[1] + (Math.random() - 0.5) * 0.1;
                 if (!initialized) {
                     px[i] = Math.random() * W;
                     py[i] = Math.random() * H;
@@ -262,12 +262,12 @@
                 px[i] += vx[i];
                 py[i] += vy[i];
                 const speed = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-                alpha[i] += (1 - alpha[i]) * 0.04;
+                alpha[i] += (1 - alpha[i]) * 0.06;
                 const a = Math.min(alpha[i], 1) * Math.min(1, 2 / (1 + speed * 0.1));
-                const size = Math.max(0.7, 1.9 - speed * 0.05);
+                const size = Math.max(1.2, 2.2 - speed * 0.08);
                 ctx.beginPath();
                 ctx.arc(px[i], py[i], size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255,255,255,${a.toFixed(2)})`;
+                ctx.fillStyle = `rgba(12,12,16,${a.toFixed(2)})`;
                 ctx.fill();
             }
             animId = requestAnimationFrame(tick);
@@ -295,6 +295,11 @@
         window.addEventListener('resize', resize);
 
         resize();
+        // Set S logo as hero-left background
+        (function() {
+            const logoSrc = document.querySelector('.navbar .logo img') && document.querySelector('.navbar .logo img').src;
+            if (logoSrc) document.querySelector('.hero-left').style.backgroundImage = 'url(' + logoSrc + ')';
+        })();
         document.fonts.ready.then(() => {
             sampleText();
             tick();
