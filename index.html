@@ -26,7 +26,6 @@
     <!-- HERO: SPLIT SCREEN -->
     <section class="hero" style="padding:0;overflow:hidden;">
         <div class="hero-left">
-            <canvas id="particleCanvas"></canvas>
             <div class="hero-text">
                 <span class="hero-eyebrow">Michigan Commercial Real Estate</span>
                 <h1>Michigan&rsquo;s<br><em>Premier</em><br>CRE Firm</h1>
@@ -169,141 +168,11 @@
     </div>
 
     <script>
-    // ===== PARTICLE TEXT — hero canvas =====
+
+    // ===== HERO LOGO BACKGROUND =====
     (function() {
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-        let W, H, animId;
-        const N = 8000;
-
-        // Typed arrays for performance
-        const px = new Float32Array(N), py = new Float32Array(N);
-        const vx = new Float32Array(N), vy = new Float32Array(N);
-        const tx = new Float32Array(N), ty = new Float32Array(N);
-        const alpha = new Float32Array(N);
-
-        let mouse = { x: -9999, y: -9999 };
-        let initialized = false;
-
-        function resize() {
-            W = canvas.offsetWidth;
-            H = canvas.offsetHeight;
-            canvas.width = W;
-            canvas.height = H;
-            if (initialized) sampleText();
-        }
-
-        function sampleText() {
-            const SCALE = 3;
-            const offscreen = document.createElement('canvas');
-            offscreen.width = W * SCALE;
-            offscreen.height = H * SCALE;
-            const oc = offscreen.getContext('2d');
-            oc.scale(SCALE, SCALE);
-            oc.font = '400 100px "Inter", sans-serif';
-            const refW = oc.measureText('PROPERTY GROUP').width;
-            const isMobile = W < 600;
-            const smallFS = Math.floor(100 * (W * (isMobile ? 0.78 : 0.55)) / refW);
-            const bigFS = Math.floor(smallFS * (isMobile ? 1.4 : 1.1));
-            const totalH = bigFS * 1.1 + smallFS * 1.1;
-            const topY = H * 0.38 - totalH * 0.5 + bigFS * 0.5;
-            const botY = topY + bigFS * 1.1 + smallFS * 0.5;
-            oc.fillStyle = '#000';
-            oc.textAlign = 'center';
-            oc.textBaseline = 'middle';
-            oc.font = `300 ${bigFS}px "Inter", sans-serif`;
-            oc.fillText('SKY', W / 2, topY);
-            oc.font = `300 ${smallFS}px "Inter", sans-serif`;
-            oc.fillText('PROPERTY GROUP', W / 2, botY);
-            const d = oc.getImageData(0, 0, W * SCALE, H * SCALE).data;
-            const pts = [];
-            for (let y = 0; y < H * SCALE; y += 2) {
-                for (let x = 0; x < W * SCALE; x += 2) {
-                    if (d[(y * W * SCALE + x) * 4 + 3] > 128) pts.push([x / SCALE, y / SCALE]);
-                }
-            }
-            // Fisher-Yates shuffle
-            for (let i = pts.length - 1; i > 0; i--) {
-                const j = Math.random() * (i + 1) | 0;
-                [pts[i], pts[j]] = [pts[j], pts[i]];
-            }
-            for (let i = 0; i < N; i++) {
-                const p = pts[i % pts.length];
-                tx[i] = p[0] + (Math.random() - 0.5) * 0.1;
-                ty[i] = p[1] + (Math.random() - 0.5) * 0.1;
-                if (!initialized) {
-                    px[i] = Math.random() * W;
-                    py[i] = Math.random() * H;
-                    vx[i] = 0; vy[i] = 0;
-                    alpha[i] = 0;
-                }
-            }
-            initialized = true;
-        }
-
-        function tick() {
-            ctx.clearRect(0, 0, W, H);
-            for (let i = 0; i < N; i++) {
-                const dx = tx[i] - px[i];
-                const dy = ty[i] - py[i];
-                vx[i] += dx * 0.28;
-                vy[i] += dy * 0.28;
-                // Mouse/touch repulsion
-                const mx = px[i] - mouse.x;
-                const my = py[i] - mouse.y;
-                const md = Math.sqrt(mx * mx + my * my);
-                if (md < 90) {
-                    const f = (90 - md) / 90 * 6;
-                    vx[i] += (mx / md) * f;
-                    vy[i] += (my / md) * f;
-                }
-                vx[i] *= 0.92;
-                vy[i] *= 0.92;
-                px[i] += vx[i];
-                py[i] += vy[i];
-                const speed = Math.sqrt(vx[i]*vx[i] + vy[i]*vy[i]);
-                alpha[i] += (1 - alpha[i]) * 0.06;
-                const a = Math.min(alpha[i], 1) * Math.min(1, 2 / (1 + speed * 0.1));
-                const size = Math.max(1.2, 2.2 - speed * 0.08);
-                ctx.beginPath();
-                ctx.arc(px[i], py[i], size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(12,12,16,${a.toFixed(2)})`;
-                ctx.fill();
-            }
-            animId = requestAnimationFrame(tick);
-        }
-
-        const heroLeft = canvas.closest('.hero-left');
-        heroLeft.addEventListener('mousemove', e => {
-            const r = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - r.left;
-            mouse.y = e.clientY - r.top;
-        });
-        heroLeft.addEventListener('mouseleave', () => {
-            mouse.x = -9999; mouse.y = -9999;
-        });
-        heroLeft.addEventListener('touchmove', e => {
-            const r = canvas.getBoundingClientRect();
-            const t = e.touches[0];
-            mouse.x = t.clientX - r.left;
-            mouse.y = t.clientY - r.top;
-        }, { passive: true });
-        heroLeft.addEventListener('touchend', () => {
-            mouse.x = -9999; mouse.y = -9999;
-        });
-
-        window.addEventListener('resize', resize);
-
-        resize();
-        // Set S logo as hero-left background
-        (function() {
-            const logoSrc = document.querySelector('.navbar .logo img') && document.querySelector('.navbar .logo img').src;
-            if (logoSrc) document.querySelector('.hero-left').style.backgroundImage = 'url(' + logoSrc + ')';
-        })();
-        document.fonts.ready.then(() => {
-            sampleText();
-            tick();
-        });
+        const logoSrc = document.querySelector('.navbar .logo img') && document.querySelector('.navbar .logo img').src;
+        if (logoSrc) document.querySelector('.hero-left').style.backgroundImage = 'url(' + logoSrc + ')';
     })();
 
     // ===== SCROLL REVEAL =====
